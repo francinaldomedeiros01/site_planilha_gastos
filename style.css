@@ -1,0 +1,495 @@
+:root {
+    --cor-fundo: #f1f5f9;
+    --cor-superficie: #ffffff;
+    --cor-texto-principal: #1e293b;
+    --cor-texto-secundario: #64748b;
+    
+    /* Paleta Harmoniosa */
+    --cor-verde-topo: #0f766e;      /* Verde Petróleo Sofisticado */
+    --cor-verde-claro: #14b8a6;
+    --cor-entrada: #10b981;         /* Verde Esmeralda */
+    --cor-entrada-fundo: #ecfdf5;
+    
+    --cor-saida: #ef4444;           /* Vermelho Coral (Fatura/Saída) */
+    --cor-saida-fundo: #fef2f2;
+    
+    --cor-saldo: #2563eb;           /* Azul Royal Suave */
+    --cor-saldo-fundo: #eff6ff;
+    
+    --cor-alerta-fundo: #fffbeb;
+    --cor-alerta-borda: #f59e0b;
+    --cor-alerta-texto: #92400e;
+    
+    --cor-borda: #e2e8f0;
+    --sombra-suave: 0 4px 14px rgba(15, 23, 42, 0.06);
+    --sombra-hover: 0 8px 22px rgba(15, 23, 42, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    line-height: 1.5;
+    padding-bottom: 40px;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   1. CABEÇALHO RESPONSIVO
+========================================= */
+.cabecalho {
+    background: linear-gradient(135deg, var(--cor-verde-topo) 0%, var(--cor-verde-claro) 100%);
+    color: #ffffff;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--sombra-suave);
+}
+
+.cabecalho-conteudo {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.controles-topo, .usuario-barra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.seletor-mes-grupo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.seletor-mes-grupo input {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: var(--cor-texto-principal);
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.btn-topo-destaque {
+    background-color: #ffffff;
+    color: var(--cor-verde-topo);
+    border: none;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-topo-destaque:hover {
+    background-color: #f0fdfa;
+    transform: translateY(-1px);
+}
+
+.btn-topo-claro {
+    background-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-topo-claro:hover { background-color: rgba(255, 255, 255, 0.35); }
+
+/* =========================================
+   2. DASHBOARD RESPONSIVO (RETRATO & PAISAGEM)
+========================================= */
+.container-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.coluna-principal, .coluna-graficos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0; /* Impede estouro horizontal no Grid */
+}
+
+/* =========================================
+   3. CARDS DE RESUMO
+========================================= */
+.resumo-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.card {
+    background-color: var(--cor-superficie);
+    padding: 16px 18px;
+    border-radius: 12px;
+    box-shadow: var(--sombra-suave);
+    border-bottom: 4px solid var(--cor-saldo);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra-hover);
+}
+
+.card h3 {
+    font-size: 0.78rem;
+    color: var(--cor-texto-secundario);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card p { font-size: 1.35rem; font-weight: 700; }
+
+.card-receita { border-bottom-color: var(--cor-entrada); background-color: var(--cor-entrada-fundo); }
+.card-receita p { color: var(--cor-entrada); }
+
+.card-despesa { border-bottom-color: var(--cor-saida); background-color: var(--cor-saida-fundo); }
+.card-despesa p { color: var(--cor-saida); }
+
+.card-saldo { border-bottom-color: var(--cor-saldo); background-color: var(--cor-saldo-fundo); }
+.card-saldo p { color: var(--cor-saldo); }
+
+/* Alerta */
+.alerta {
+    background-color: var(--cor-alerta-fundo);
+    border: 1px solid #fde68a;
+    border-left: 5px solid var(--cor-alerta-borda);
+    color: var(--cor-alerta-texto);
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.oculto { display: none !important; }
+
+/* =========================================
+   4. FORMULÁRIO E TABELA COM BADGES DE CORES
+========================================= */
+.formulario-secao, .tabela-secao, .grafico-card {
+    background-color: var(--cor-superficie);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--sombra-suave);
+    width: 100%;
+}
+
+.formulario-secao h2, .tabela-secao h2, .grafico-card h3 {
+    font-size: 1.05rem;
+    color: var(--cor-texto-principal);
+}
+
+.formulario-secao h2 { margin-bottom: 14px; }
+
+#form-transacao {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.3fr 1fr 1.2fr auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+}
+
+.campo-grupo label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--cor-texto-secundario);
+}
+
+.campo-grupo input, .campo-grupo select {
+    padding: 9px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    background-color: #f8fafc;
+    color: var(--cor-texto-principal);
+    width: 100%;
+}
+
+.campo-grupo input:focus, .campo-grupo select:focus {
+    outline: none;
+    border-color: var(--cor-verde-topo);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+}
+
+.btn-adicionar {
+    background-color: var(--cor-verde-topo);
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-adicionar:hover {
+    background-color: #115e59;
+    transform: translateY(-1px);
+}
+
+.btn-full { width: 100%; margin-top: 10px; }
+
+/* Cabeçalho da Tabela */
+.tabela-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.badge-contagem {
+    background: #f1f5f9;
+    color: var(--cor-texto-secundario);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.tabela-scroll {
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+table { width: 100%; border-collapse: collapse; text-align: left; }
+
+thead th {
+    background-color: #f8fafc;
+    color: var(--cor-texto-secundario);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--cor-borda);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+tbody tr { transition: background-color 0.15s; }
+tbody tr:hover { background-color: #f8fafc; }
+
+tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+}
+
+/* Etiquetas Coloridas das Categorias na Tabela */
+.tag-categoria {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.linha-entrada td:nth-child(4) { color: var(--cor-entrada); font-weight: 700; }
+.linha-saida td:nth-child(4) { color: var(--cor-saida); font-weight: 700; }
+
+.btn-excluir {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-excluir:hover { background-color: #fecaca; }
+
+/* =========================================
+   5. GRÁFICOS INTERATIVOS E RESPONSIVOS
+========================================= */
+.grafico-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.dica-clique {
+    font-size: 0.75rem;
+    color: var(--cor-verde-topo);
+    background: #f0fdfa;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.canvas-wrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    max-width: 100%;
+    display: block;
+}
+
+/* =========================================
+   6. MODAL DE AUTENTICAÇÃO
+========================================= */
+.modal-fundo {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-caixa {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 28px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-fechar {
+    position: absolute;
+    top: 14px; right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: var(--cor-texto-secundario);
+}
+
+.modal-abas {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 16px;
+}
+
+.aba {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--cor-texto-secundario);
+}
+
+.aba.ativa {
+    color: var(--cor-verde-topo);
+    border-bottom: 3px solid var(--cor-verde-topo);
+}
+
+.aviso-modal {
+    font-size: 0.85rem;
+    background: #f0fdfa;
+    color: var(--cor-verde-topo);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+/* =========================================
+   7. QUEBRAS RESPONSIVAS (CELULAR / RETRATO)
+========================================= */
+@media (max-width: 1024px) {
+    .container-dashboard {
+        grid-template-columns: minmax(0, 1fr); /* Empilha em 1 coluna sem esconder os gráficos */
+    }
+    #form-transacao {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .resumo-cards {
+        grid-template-columns: 1fr;
+    }
+    .cabecalho-conteudo {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .controles-topo, .usuario-barra {
+        justify-content: center;
+    }
+}
+/* =========================================
+   8. BOTÕES DE HISTÓRICO (DESFAZER / REFAZER)
+========================================= */
+.acoes-extrato {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-historico {
+    background-color: #f1f5f9;
+    color: var(--cor-texto-principal);
+    border: 1px solid #cbd5e1;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-historico:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+}

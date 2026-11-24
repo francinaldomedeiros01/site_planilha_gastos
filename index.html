@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Financeira Inteligente</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cloudflare.com"></script>
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <!-- Controles de Período e Exportação -->
+            <div class="controles-topo" data-html2canvas-ignore="true">
+                <div class="seletor-mes-grupo">
+                    <label for="filtro-mes">Período:</label>
+                    <input type="month" id="filtro-mes">
+                </div>
+                <button id="btn-salvar-conta" class="btn-topo-destaque">💾 Salvar</button>
+                <button id="btn-gerar-pdf" class="btn-topo-claro">📄 PDF</button>
+                <button id="btn-exportar-json" class="btn-topo-claro">📥 JSON</button>
+                <label for="input-importar-json" class="btn-topo-claro" style="cursor:pointer;">📤 Abrir</label>
+                <input type="file" id="input-importar-json" accept=".json" class="oculto">
+            </div>
+
+            <!-- Área de Usuário / Login -->
+            <div class="usuario-barra" data-html2canvas-ignore="true">
+                <span id="status-usuario">Modo Visitante</span>
+                <button id="btn-abrir-auth" class="btn-topo-destaque">Entrar / Cadastrar</button>
+                <button id="btn-sair" class="btn-topo-claro oculto">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-dashboard" id="area-impressao-pdf">
+        
+        <!-- COLUNA PRINCIPAL: Resumo + Formulário + Tabela -->
+        <div class="coluna-principal">
+            
+            <section class="resumo-cards">
+                <div class="card card-receita">
+                    <h3>Entradas (<span class="label-mes-atual">Mês</span>)</h3>
+                    <p id="total-receitas">R$ 0,00</p>
+                </div>
+                <div class="card card-despesa">
+                    <h3>Saídas (<span class="label-mes-atual">Mês</span>)</h3>
+                    <p id="total-despesas">R$ 0,00</p>
+                </div>
+                <div class="card card-saldo">
+                    <h3>Saldo Livre</h3>
+                    <p id="saldo-atual">R$ 0,00</p>
+                </div>
+            </section>
+
+            <section id="alerta-ods" class="alerta oculto">
+                <strong>💡 Atenção:</strong> <span id="mensagem-alerta"></span>
+            </section>
+
+            <section class="formulario-secao" data-html2canvas-ignore="true">
+                <h2>Novo Lançamento (Atual ou Futuro)</h2>
+                <form id="form-transacao">
+                    <div class="campo-grupo">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" id="descricao" placeholder="Ex: Fatura Cartão, Salário..." required>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="valor">Valor (R$)</label>
+                        <input type="number" id="valor" step="0.01" min="0.01" placeholder="0,00" required>
+                    </div>
+                    <div class="campo-grupo">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" required>
+                            <option value="Fatura" selected>Fatura / Cartão</option>
+                            <option value="Essencial">Essencial (Água, Luz, Casa)</option>
+                            <option value="Alimentacao">Alimentação</option>
+                            <option value="Transporte">Transporte</option>
+                            <option value="Superfluo">Consumo / Lazer</option>
+                            <option value="Outro">Outro</option>
+                            <option value="Salario">Salário / Renda Extra</option>
+                        </select>
+                    </div>
+                    <div class="campo-grupo">
+                        <label for="tipo">Tipo (Auto)</label>
+                        <select id="tipo" required>
+                            <option value="saida" selected>Saída (-)</option>
+                            <option value="entrada">Entrada (+)</option>
+                        </select>
+                    </div>
+                    <div class="campo-grupo">
+                        <label for="mes-lancamento">Mês</label>
+                        <input type="month" id="mes-lancamento" required>
+                    </div>
+                    <button type="submit" class="btn-adicionar">+ Adicionar</button>
+                </form>
+            </section>
+            <section class="tabela-secao" id="secao-extrato">
+                <div class="tabela-cabecalho">
+                    <h2>Extrato de <span class="label-mes-atual">Mês</span></h2>
+                    <div class="acoes-extrato" data-html2canvas-ignore="true">
+                        <button id="btn-desfazer" class="btn-historico oculto" title="Desfazer última ação (Ctrl+Z)">↩️ Desfazer</button>
+                        <button id="btn-refazer" class="btn-historico oculto" title="Refazer ação (Ctrl+Y)">↪️ Refazer</button>
+                        <span class="badge-contagem" id="contagem-itens">0 itens</span>
+                    </div>
+                </div>                
+                <div class="tabela-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                                <th data-html2canvas-ignore="true">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-transacoes">
+                            <!-- Preenchido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- COLUNA LATERAL / INFERIOR EM RETRATO: Gráficos Interativos -->
+        <aside class="coluna-graficos">
+            <div class="grafico-card">
+                <div class="grafico-topo">
+                    <h3>📊 Gastos por Mês</h3>
+                    <span class="dica-clique" data-html2canvas-ignore="true">Clique na torre para abrir o mês</span>
+                </div>
+                <div class="canvas-wrapper" id="wrapper-torres">
+                    <canvas id="grafico-torres"></canvas>
+                </div>
+            </div>
+
+            <div class="grafico-card">
+                <div class="grafico-topo">
+                    <h3>🍩 Gastos por Categoria (<span class="label-mes-atual">Mês</span>)</h3>
+                </div>
+                <div class="canvas-wrapper" id="wrapper-pizza">
+                    <canvas id="grafico-pizza"></canvas>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- MODAL DE LOGIN / CADASTRO -->
+    <div id="modal-auth" class="modal-fundo oculto" data-html2canvas-ignore="true">
+        <div class="modal-caixa">
+            <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
+            
+            <div class="modal-abas">
+                <button id="aba-login" class="aba ativa">Entrar</button>
+                <button id="aba-cadastro" class="aba">Criar Conta</button>
+            </div>
+
+            <p id="aviso-motivo-auth" class="aviso-modal">
+                Entre ou crie uma conta para salvar seus dados e gerar relatórios.
+            </p>
+
+            <form id="form-login">
+                <div class="campo-grupo">
+                    <label for="login-email">E-mail</label>
+                    <input type="email" id="login-email" placeholder="seu@email.com" required>
+                </div>
+                <div class="campo-grupo">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn-adicionar btn-full">Entrar e Continuar</button>
+            </form>
+
+            <form id="form-cadastro" class="oculto">
+                <div class="campo-grupo">
+                    <label for="cad-nome">Seu Nome</label>
+                    <input type="text" id="cad-nome" placeholder="Ex: João Silva" required>
+                </div>
+                <div class="campo-grupo">
+                    <label for="cad-email">E-mail</label>
+                    <input type="email" id="cad-email" placeholder="seu@email.com" required>
+                </div>
+                <div class="campo-grupo">
+                    <label for="cad-senha">Crie uma Senha</label>
+                    <input type="password" id="cad-senha" placeholder="Mínimo 4 caracteres" minlength="4" required>
+                </div>
+                <button type="submit" class="btn-adicionar btn-full">Cadastrar e Salvar</button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
